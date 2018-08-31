@@ -26,16 +26,16 @@ public class MultipleLinearRegression {
 		double predictionA = gradientFit.predict(inputVectors[30]);
 		double predictionB = normalFit.predict(inputVectors[30]);
 		System.out.println("Valor atual: " + testValue + "\nPrevisão usando gradiente descendente: " + predictionA);
-		System.out.println("Previsão usando o método de equação normal: " + predictionB);
+		System.out.println("Previsão usando o método de equação normal: " + predictionB + "\n");
 		testValue = inputVectors[40].getFeature(feature);
 		predictionA = gradientFit.predict(inputVectors[40]);
 		predictionB = normalFit.predict(inputVectors[40]);
 		System.out.println("Valor atual: " + testValue + "\nPrevisão usando gradiente descendente: " + predictionA);
-		System.out.println("Previsão usando o método de equação normal: " + predictionB);
+		System.out.println("Previsão usando o método de equação normal: " + predictionB + "\n");
 		testValue = inputVectors[50].getFeature(feature);
 		predictionA = gradientFit.predict(inputVectors[50]);
 		predictionB = normalFit.predict(inputVectors[50]);
 		System.out.println("Valor atual: " + testValue + "\nPrevisão usando gradiente descendente: " + predictionA);
-		System.out.println("Previsão usando o método de equação normal: " + predictionB);
+		System.out.println("Previsão usando o método de equação normal: " + predictionB + "\n");
 	}
 }
