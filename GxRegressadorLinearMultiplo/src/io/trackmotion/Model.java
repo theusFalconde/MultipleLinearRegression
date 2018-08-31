@@ -24,8 +24,8 @@ public class Model {
 	}
 
 	public String toString() {
-		String output = "Multiple linear regression predicting " + dependent + " using " + (parameters.size() - 1)
-				+ " features.\n" + "R-Squared: " + rSquared
+		String output = "Previsão de regressão linear múltipla " + dependent + " usando " + (parameters.size() - 1)
+				+ " características.\n" + "Raiz quadrada: " + rSquared
 				+ "\n\nFeature\t\t\t\tParameter\n-------------------------------------------------------------\n";
 
 		for (String feature : parameters.keySet()) {

@@ -11,8 +11,8 @@ public class Fit {
 
 		double[][] train = new double[inputVectors[0].size() + 1][inputVectors.length];
 		for (int i = 0; i < inputVectors.length; i++) {
-			train[0][i] = 1; // Intercept
-			train[train.length - 1][i] = inputVectors[i].getFeature(dependent); // Dependent variable in the last column
+			train[0][i] = 1;
+			train[train.length - 1][i] = inputVectors[i].getFeature(dependent);
 			int j = 1;
 			for (String feature : inputVectors[i].getFeatures()) {
 				if (!feature.equals(dependent)) {
@@ -21,11 +21,9 @@ public class Fit {
 				}
 			}
 		}
-
 		double[] thetas = new double[inputVectors[0].size()];
 		double[] temps = new double[thetas.length];
 		double delta;
-
 		do {
 			delta = 0;
 			for (int i = 0; i < thetas.length; i++) {
@@ -33,13 +31,10 @@ public class Fit {
 
 				delta += Math.abs(thetas[i] - temps[i]);
 			}
-
 			for (int i = 0; i < thetas.length; i++)
 				thetas[i] = temps[i];
 		} while (delta > 1E-7);
-
 		deStandardise(stanData, inputVectors, thetas);
-
 		LinkedHashMap<String, Double> parameters = new LinkedHashMap<String, Double>();
 		parameters.put("Intercept", thetas[0]);
 		int j = 1;
@@ -49,29 +44,22 @@ public class Fit {
 				j++;
 			}
 		}
-
 		Model outputModel = new Model(parameters, dependent, 0);
-
 		outputModel.rSquared = calculateRSquared(inputVectors, outputModel);
-
 		return outputModel;
 	}
 
 	private static double evaluateCost(double[] thetas, double[][] data, int featureIndex) {
 		double result = 0;
-
 		for (int i = 0; i < data[0].length; i++) {
 			double error = 0;
-
 			for (int j = 0; j < data.length - 1; j++)
 				error += data[j][i] * thetas[j];
-
 			error -= data[data.length - 1][i];
 			error *= data[featureIndex][i];
 
 			result += error;
 		}
-
 		return result;
 	}
 
@@ -92,15 +80,11 @@ public class Fit {
 		}
 		RealMatrix X = new Array2DRowRealMatrix(design);
 		RealMatrix XPrime = new Array2DRowRealMatrix(designT);
-
 		double[] yArray = new double[inputVectors.length];
 		for (int i = 0; i < inputVectors.length; i++)
 			yArray[i] = inputVectors[i].getFeature(dependent);
 		RealMatrix y = new Array2DRowRealMatrix(yArray);
-
-		RealMatrix theta = new LUDecomposition(XPrime.multiply(X)).getSolver().getInverse().multiply(XPrime)
-				.multiply(y);
-
+		RealMatrix theta = new LUDecomposition(XPrime.multiply(X)).getSolver().getInverse().multiply(XPrime).multiply(y);
 		LinkedHashMap<String, Double> parameters = new LinkedHashMap<String, Double>();
 		double[] thetas = theta.getColumn(0);
 		parameters.put("Intercept", thetas[0]);
@@ -111,11 +95,8 @@ public class Fit {
 				j++;
 			}
 		}
-
 		Model outputModel = new Model(parameters, dependent, 0);
-
 		outputModel.rSquared = calculateRSquared(inputVectors, outputModel);
-
 		return outputModel;
 	}
 
@@ -134,7 +115,6 @@ public class Fit {
 	private static Standardisation standardise(Observation[] inputVectors) {
 		double[] xbars = new double[inputVectors[0].size()];
 		double[] sigmas = new double[inputVectors[0].size()];
-
 		for (int i = 0; i < inputVectors.length; i++) {
 			int j = 0;
 			for (String feature : inputVectors[i].getFeatures()) {
@@ -142,10 +122,8 @@ public class Fit {
 				j++;
 			}
 		}
-
 		for (int i = 0; i < xbars.length; i++)
 			xbars[i] = xbars[i] / inputVectors.length;
-
 		for (int i = 0; i < inputVectors.length; i++) {
 			int j = 0;
 			for (String feature : inputVectors[i].getFeatures()) {
@@ -153,10 +131,8 @@ public class Fit {
 				j++;
 			}
 		}
-
 		for (int i = 0; i < sigmas.length; i++)
 			sigmas[i] = Math.sqrt(sigmas[i] / inputVectors.length);
-
 		for (int i = 0; i < inputVectors.length; i++) {
 			int j = 0;
 			for (String feature : inputVectors[i].getFeatures()) {
@@ -164,9 +140,7 @@ public class Fit {
 				j++;
 			}
 		}
-
 		Standardisation output = new Standardisation(inputVectors, xbars, sigmas);
-
 		return output;
 	}
 
@@ -177,7 +151,6 @@ public class Fit {
 		}
 		thetas[0] *= standard.sigmas[standard.sigmas.length - 1];
 		thetas[0] += standard.xbars[standard.xbars.length - 1];
-
 		for (int i = 0; i < inputVectors.length; i++) {
 			int j = 0;
 			for (String feature : inputVectors[i].getFeatures()) {
@@ -194,14 +167,12 @@ public class Fit {
 			ybar += inputVectors[i].getFeature(model.dependent);
 		}
 		ybar /= inputVectors.length;
-
 		double rss = 0;
 		double tss = 0;
 		for (int i = 0; i < inputVectors.length; i++) {
 			rss += Math.pow((inputVectors[i].getFeature(model.dependent) - model.predict(inputVectors[i])), 2);
 			tss += Math.pow((inputVectors[i].getFeature(model.dependent) - ybar), 2);
 		}
-
 		return (1 - rss / tss);
 	}
 }
